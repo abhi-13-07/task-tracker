@@ -28,7 +28,6 @@ public class TaskTracker {
                 System.out.println("Updated task with ID (" + updatedTask.id + ")");
                 break;
             case "list":
-                
                 if (args.length <= 1) {
                     list.list();
                 } else {
