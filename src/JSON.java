@@ -1,20 +1,9 @@
 import java.util.*;
 
+// from ChatGPT
 public class JSON {
-
-    // Main method for testing
-//    public static void main(String[] args) {
-//        String jsonString = "[{\"name\":\"John\",\"age\":30,\"email\":\"john@example.com\",\"isStudent\":false,\"scores\":[85, 90, 92]},"
-//                + "{\"name\":\"Jane\",\"age\":25,\"email\":\"jane@example.com\",\"isStudent\":true,\"scores\":[88, 91, 95]}]";
-//
-//        JSON parser = new JSON();
-//        Object result = parser.parse(jsonString);
-//
-//        System.out.println(result);
-//    }
-
     // Parse method to parse the JSON string
-    public Object parse(String json) {
+    public static Object parse(String json) {
         json = json.trim();
         if (json.startsWith("{")) {
             return parseObject(json.toCharArray(), new int[]{0});
@@ -25,7 +14,7 @@ public class JSON {
     }
 
     // Parse JSON object
-    private Map<String, Object> parseObject(char[] json, int[] index) {
+    private static Map<String, Object> parseObject(char[] json, int[] index) {
         Map<String, Object> jsonObject = new HashMap<>();
         String key = null;
         while (index[0] < json.length) {
@@ -55,7 +44,7 @@ public class JSON {
     }
 
     // Parse JSON array
-    private List<Object> parseArray(char[] json, int[] index) {
+    private static List<Object> parseArray(char[] json, int[] index) {
         List<Object> jsonArray = new ArrayList<>();
         while (index[0] < json.length) {
             char currentChar = json[index[0]];
@@ -77,7 +66,7 @@ public class JSON {
     }
 
     // Parse value (string, number, boolean, or null)
-    private Object parseValue(char[] json, int[] index) {
+    private static Object parseValue(char[] json, int[] index) {
         skipWhitespace(json, index);
         char currentChar = json[index[0]];
         if (currentChar == '"') {
@@ -92,7 +81,7 @@ public class JSON {
     }
 
     // Parse JSON string
-    private String parseString(char[] json, int[] index) {
+    private static String parseString(char[] json, int[] index) {
         StringBuilder sb = new StringBuilder();
         index[0]++;  // Skip opening quote
         while (index[0] < json.length && json[index[0]] != '"') {
@@ -104,7 +93,7 @@ public class JSON {
     }
 
     // Parse primitive (number, boolean, null)
-    private Object parsePrimitive(char[] json, int[] index) {
+    private static Object parsePrimitive(char[] json, int[] index) {
         StringBuilder sb = new StringBuilder();
         while (index[0] < json.length && !Character.isWhitespace(json[index[0]]) && json[index[0]] != ',' && json[index[0]] != ']' && json[index[0]] != '}') {
             sb.append(json[index[0]]);
@@ -123,7 +112,7 @@ public class JSON {
     }
 
     // Skip whitespace
-    private void skipWhitespace(char[] json, int[] index) {
+    private static void skipWhitespace(char[] json, int[] index) {
         while (index[0] < json.length && Character.isWhitespace(json[index[0]])) {
             index[0]++;
         }

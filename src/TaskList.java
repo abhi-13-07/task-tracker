@@ -31,9 +31,9 @@ public class TaskList {
 
             if (fileContent.isEmpty()) return;
 
-            JSON jsonParser = new JSON();
+            List<Map<String, Object>> obj = (List<Map<String, Object>>) JSON.parse(fileContent);
 
-            List<Map<String, Object>> obj = (List<Map<String, Object>>)jsonParser.parse(fileContent);
+            if (obj == null) return;
 
             for (Map<String, Object> item : obj) {
                 int id = Integer.parseInt(item.get("id").toString());
