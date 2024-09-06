@@ -2,6 +2,25 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class TaskTracker {
+    static String[] commands = {
+            "add <Todo>",
+            "update <ID> <Todo Text>",
+            "delete <ID>",
+            "list <todo | in_progress | done>?",
+            "mark-in_progress <ID>",
+            "mark-done <ID>",
+            "help"
+    };
+    static String[] descriptions = {
+            "adds new item to the list",
+            "updates item with specified ID",
+            "deletes item with specified ID",
+            "lists todo based on specified filter.",
+            "marks item with specified ID as in_progress",
+            "marks item with specified ID as done",
+            "displays list of available commands",
+    };
+
     public static void main(String[] args) {
         if (args.length == 0) {
             showAllCommands();
@@ -89,13 +108,28 @@ public class TaskTracker {
     }
 
     private static void showAllCommands() {
-        System.out.println("COMMANDS\tDESCRIPTION");
-        System.out.println("add <Todo> - \tadds new item to the list");
-        System.out.println("update <ID> <Todo Text> -\tupdates item with specified ID");
-        System.out.println("delete <ID> - \tdeletes item with specified ID");
-        System.out.println("list <todo | in_progress | done>? - \tlists todo based on specified filter.");
-        System.out.println("mark-in_progress <ID> - \tmarks item with specified ID as in_progress");
-        System.out.println("mark-done <ID> - \tmarks item with specified ID as done");
-        System.out.println("help - \tdisplays list of available commands");
+        int commandMaxWidth = lenOfLargestString(commands);
+        int descriptionMaxWidth = lenOfLargestString(descriptions);
+
+        System.out.printf("%-" + commandMaxWidth + "s \t" + "%-" + descriptionMaxWidth + "s\n", "COMMANDS", "DESCRIPTION");
+
+        for (int i = 0; i < commands.length; i++) {
+            System.out.printf("%-" + commandMaxWidth + "s \t" + "%-" + descriptionMaxWidth + "s\n", commands[i], descriptions[i]);
+        }
+    }
+
+    public static int lenOfLargestString(String[] arr) {
+        int largest = arr[0].length();
+        int len;
+
+        for (int i = 0; i < arr.length; i++) {
+            len = arr[i].length();
+
+            if (len > largest) {
+                largest = len;
+            }
+        }
+
+        return largest;
     }
 }

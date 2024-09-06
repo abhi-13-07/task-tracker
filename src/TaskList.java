@@ -12,11 +12,13 @@ public class TaskList {
     private ArrayList<Task> taskList;
     private int size;
     private File storage;
+    private int taskMaxWidth;
 
     TaskList(String path) {
         this.taskList = new ArrayList<Task>();
         this.size = 0;
         this.storage = new File(path);
+        this.taskMaxWidth = 0;
     }
 
     public void load() {
@@ -44,6 +46,9 @@ public class TaskList {
 
                 this.taskList.add(new Task(id, task, status, createdAt, updatedAt));
                 this.size++;
+
+                // update max length among task
+                this.taskMaxWidth = Math.max(task.length(), this.taskMaxWidth);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -53,6 +58,7 @@ public class TaskList {
     public Task addNewTask(String task) {
         int id = this.taskList.get(this.size - 1).id + 1;
         Task newTask = new Task(id, task);
+        this.taskMaxWidth = Math.max(task.length(), this.taskMaxWidth);
         this.appendTask(newTask);
         this.save();
         return newTask;
@@ -133,16 +139,16 @@ public class TaskList {
     }
 
     public void list() {
-        System.out.println("ID\tTASK\tSTATUS\tCREATED AT\tUPDATED AT");
+        System.out.printf("%-3s\t" + "%-" + this.taskMaxWidth + "s\t" + "%-11s\t%-8s\t%-8s\n", "ID", "TASK", "STATUS", "CREATED AT", "UPDATED AT");
 
         for (int i = 0; i < this.size; i++) {
             Task task = taskList.get(i);
-            System.out.printf("%s\t%s\t%s\t%s\t%s%n", task.id, task.task, task.status, task.createdAt, task.updatedAt);
+            System.out.printf("%-3s\t" + "%-" + this.taskMaxWidth + "s\t" + "%-11s\t%-8s\t%-8s\n", task.id, task.task, task.status, task.createdAt.toLocalDate(), task.updatedAt.toLocalDate());
         }
     }
 
     public void list(TaskStatus status) {
-        System.out.println("ID\tTASK\tSTATUS\tCREATED AT\tUPDATED AT");
+        System.out.printf("%-3s\t" + "%-" + this.taskMaxWidth + "s\t" + "%-11s\t%-8s\t%-8s\n", "ID", "TASK", "STATUS", "CREATED AT", "UPDATED AT");
 
         for (int i = 0; i < this.size; i++) {
             Task task = taskList.get(i);
@@ -151,7 +157,7 @@ public class TaskList {
                 continue;
             }
 
-            System.out.printf("%s\t%s\t%s\t%s\t%s%n", task.id, task.task, task.status, task.createdAt, task.updatedAt);
+            System.out.printf("%-3s\t" + "%-" + this.taskMaxWidth + "s\t" + "%-11s\t%-8s\t%-8s\n", task.id, task.task, task.status, task.createdAt, task.updatedAt);
         }
     }
 }
